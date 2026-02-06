@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
 import { ChatContext } from "../../context/ChatContext";
+import logo1 from "../../assets/logo1.jpeg";
+import logo2 from "../../assets/logo2.png";
 
 export default function Sidebar() {
   const {
@@ -8,6 +10,9 @@ export default function Sidebar() {
     activeChatId,
     setActiveChatId,
     newChat,
+    sidebarOpen,
+    theme,
+    deleteChat,
   } = useContext(ChatContext);
 
   const [editingId, setEditingId] = useState(null);
@@ -29,38 +34,65 @@ export default function Sidebar() {
     setEditingId(null);
   };
 
+  const handleDelete = (e, chatId) => {
+    e.stopPropagation(); // Prevent chat selection when clicking delete
+    if (window.confirm("Delete this chat?")) {
+      deleteChat(chatId);
+    }
+  };
+
+  if (!sidebarOpen) return null;
+
   return (
     <div className="sidebar">
+      <div className="sidebar-logo">
+        <img src={theme === "dark" ? logo2 : logo1} alt="Logo" />
+        <span>Pragna-1 A</span>
+      </div>
+
       <button className="new-chat-btn" onClick={newChat}>
         + New Chat
       </button>
 
-      {chats.map((chat) => (
-        <div
-          key={chat.id}
-          className={`chat-item ${
-            chat.id === activeChatId ? "active" : ""
-          }`}
-          onClick={() => setActiveChatId(chat.id)}
-        >
-          {editingId === chat.id ? (
-            <input
-              autoFocus
-              value={tempTitle}
-              onChange={(e) => setTempTitle(e.target.value)}
-              onBlur={() => saveEdit(chat.id)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") saveEdit(chat.id);
-                if (e.key === "Escape") setEditingId(null);
-              }}
-            />
-          ) : (
-            <span onDoubleClick={() => startEdit(chat)}>
-              {chat.title}
-            </span>
-          )}
-        </div>
-      ))}
+      <div className="chat-history">
+        {chats.map((chat) => (
+          <div
+            key={chat.id}
+            className={`chat-item ${chat.id === activeChatId ? "active" : ""
+              }`}
+            onClick={() => setActiveChatId(chat.id)}
+          >
+            {editingId === chat.id ? (
+              <input
+                autoFocus
+                value={tempTitle}
+                onChange={(e) => setTempTitle(e.target.value)}
+                onBlur={() => saveEdit(chat.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") saveEdit(chat.id);
+                  if (e.key === "Escape") setEditingId(null);
+                }}
+              />
+            ) : (
+              <>
+                <span onDoubleClick={() => startEdit(chat)}>
+                  {chat.title}
+                </span>
+                <button
+                  className="delete-chat-btn"
+                  onClick={(e) => handleDelete(e, chat.id)}
+                  title="Delete chat"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
