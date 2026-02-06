@@ -1,0 +1,52 @@
+.sidebar {
+  width: 260px;
+  background: #f7f7f8;
+  border-right: 1px solid #e5e5e5;
+  padding: 12px;
+}
+
+.new-chat-btn {
+  width: 100%;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.new-chat-btn:hover {
+  background: #f0f0f0;
+}
+
+
+.chat-item:hover {
+  background: #e5e7eb;
+}
+.chat-item input {
+  width: 100%;
+  border: none;
+  background: #f3f4f6;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.chat-item {
+  padding: 6px 10px;        /* ⬅ was too large */
+  margin: 2px 0;            /* ⬅ tighten vertical spacing */
+  font-size: 14px;
+  line-height: 1.3;         /* ⬅ reduces text height */
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.chat-item span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-item.active {
+  background: #f3f4f6;
+}
